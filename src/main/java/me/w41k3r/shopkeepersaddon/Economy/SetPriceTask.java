@@ -10,6 +10,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import static me.w41k3r.shopkeepersaddon.Main.*;
 
 public class SetPriceTask implements Listener {
+
     private final Player player;
     private final int slot;
     private final PriceInputCallback callback;
@@ -53,6 +54,6 @@ public class SetPriceTask implements Listener {
             event.setCancelled(true);
             sendPlayerMessage(player, setting().getString("messages.invalid-price"));
         }
-
     }
 }
+

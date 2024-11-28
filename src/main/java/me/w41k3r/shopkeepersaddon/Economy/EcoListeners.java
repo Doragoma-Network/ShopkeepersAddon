@@ -27,32 +27,30 @@ import static me.w41k3r.shopkeepersaddon.Main.*;
 
 public class EcoListeners implements Listener {
 
-
     @EventHandler
     public void onTradeSelect(TradeSelectEvent event) {
         Bukkit.getScheduler().runTaskLater(plugin, () -> removeEconomyItem((Player) event.getWhoClicked()), 1);
         MerchantRecipe recipe = event.getMerchant().getRecipe(event.getIndex());
         Player player = (Player) event.getWhoClicked();
         if (!hasData(recipe.getIngredients().get(0), "itemprice", PersistentDataType.DOUBLE)
-            && !hasData(recipe.getResult(), "itemprice", PersistentDataType.DOUBLE)){
+                && !hasData(recipe.getResult(), "itemprice", PersistentDataType.DOUBLE)) {
             BukkitScheduler scheduler = player.getServer().getScheduler();
             scheduler.scheduleSyncDelayedTask(plugin, () -> {
                 Bukkit.getScheduler().runTaskLater(plugin, () -> removeEconomyItem(player), 1);
             }, 2L);
             return;
         }
+
         debugLog(recipe.getIngredients().get(0).getItemMeta().toString());
 
-        if(hasData(recipe.getIngredients().get(0), "itemprice", PersistentDataType.DOUBLE)){
-            if (!hasMoney(player, getPrice(event.getMerchant().getRecipe(event.getIndex()).getIngredients().getFirst()))){
+        if (hasData(recipe.getIngredients().get(0), "itemprice", PersistentDataType.DOUBLE)) {
+            if (!hasMoney(player, getPrice(event.getMerchant().getRecipe(event.getIndex()).getIngredients().getFirst()))) {
                 sendPlayerMessage(player, setting().getString("messages.no-money"));
                 event.setCancelled(true);
                 return;
             }
             BukkitScheduler scheduler = player.getServer().getScheduler();
-            scheduler.scheduleSyncDelayedTask(plugin, () -> {
-                setItemsOnTradeSlots(event, 0);
-            }, 5L);
+            scheduler.scheduleSyncDelayedTask(plugin, () -> setItemsOnTradeSlots(event, 0), 5L);
         }
     }
 
@@ -64,18 +62,18 @@ public class EcoListeners implements Listener {
         Shopkeeper shopkeeper = event.getShopkeeper();
         boolean isAdminShopkeeper = shopkeeper instanceof AdminShopkeeper;
         Double price;
-        if (hasData(recipe.getItem1().copy(), "itemprice", PersistentDataType.DOUBLE)){
+        if (hasData(recipe.getItem1().copy(), "itemprice", PersistentDataType.DOUBLE)) {
             price = getPrice(recipe.getItem1().copy());
             Money.withdrawPlayer(player, price);
-            if (!isAdminShopkeeper){
+            if (!isAdminShopkeeper) {
                 Money.depositPlayer(((PlayerShopkeeper) shopkeeper).getOwner(), price);
             }
             return;
         }
-        if (hasData(recipe.getResultItem().copy(), "itemprice", PersistentDataType.DOUBLE)){
+        if (hasData(recipe.getResultItem().copy(), "itemprice", PersistentDataType.DOUBLE)) {
             price = getPrice(recipe.getResultItem().copy());
-            if (!isAdminShopkeeper){
-                if (!Money.has(((PlayerShopkeeper) shopkeeper).getOwner(), price)){
+            if (!isAdminShopkeeper) {
+                if (!Money.has(((PlayerShopkeeper) shopkeeper).getOwner(), price)) {
                     sendPlayerMessage(player, setting().getString("messages.no-money-owner"));
                     event.setCancelled(true);
                     return;
@@ -84,7 +82,7 @@ public class EcoListeners implements Listener {
             }
             Money.depositPlayer(player, price);
             event.getClickEvent().getClickedInventory().removeItem(recipe.getItem1().copy());
-            if (recipe.hasItem2()){
+            if (recipe.hasItem2()) {
                 event.getClickEvent().getClickedInventory().removeItem(recipe.getItem2().copy());
             }
             event.setCancelled(true);
@@ -93,7 +91,7 @@ public class EcoListeners implements Listener {
 
 
     @EventHandler
-    public void OpenEditorUI(ShopkeeperOpenUIEvent event){
+    public void OpenEditorUI(ShopkeeperOpenUIEvent event) {
         if (!(event.getUIType().equals(ShopkeepersAPI.getDefaultUITypes().getEditorUIType()))
                 || !plugin.setting().getBoolean("economy.enabled")) {
             return;
@@ -101,33 +99,33 @@ public class EcoListeners implements Listener {
 
         debugLog("Shopkeeper opened editor UI" + event.getUIType());
 
-        ShopEditTask shopEditor= new ShopEditTask(event.getPlayer(), event.getShopkeeper());
+        ShopEditTask shopEditor = new ShopEditTask(event.getPlayer(), event.getShopkeeper());
         shopEditor.startEdit();
     }
 
     @EventHandler
-    public void InventoryClose(InventoryCloseEvent event){
+    public void InventoryClose(InventoryCloseEvent event) {
         Bukkit.getScheduler().runTaskLater(plugin, () -> removeEconomyItem((Player) event.getPlayer()), 1);
     }
 
     @EventHandler
-    public void InventoryOpen(InventoryOpenEvent event){
+    public void InventoryOpen(InventoryOpenEvent event) {
         Bukkit.getScheduler().runTaskLater(plugin, () -> removeEconomyItem((Player) event.getPlayer()), 1);
     }
 
     @EventHandler
-    public void onItemPickup(InventoryPickupItemEvent event){
-        if (!hasData(event.getItem().getItemStack(), "itemprice", PersistentDataType.DOUBLE)){
+    public void onItemPickup(InventoryPickupItemEvent event) {
+        if (!hasData(event.getItem().getItemStack(), "itemprice", PersistentDataType.DOUBLE)) {
             return;
         }
-        if (event.getInventory().getHolder() instanceof Player){
+        if (event.getInventory().getHolder() instanceof Player) {
             Bukkit.getScheduler().runTaskLater(plugin, () -> removeEconomyItem((Player) event.getInventory().getHolder()), 1);
         }
     }
 
     @EventHandler
-    public void onItemDrop(PlayerDropItemEvent event){
-        if (!hasData(event.getItemDrop().getItemStack(), "itemprice", PersistentDataType.DOUBLE)){
+    public void onItemDrop(PlayerDropItemEvent event) {
+        if (!hasData(event.getItemDrop().getItemStack(), "itemprice", PersistentDataType.DOUBLE)) {
             return;
         }
         event.setCancelled(true);
@@ -135,8 +133,8 @@ public class EcoListeners implements Listener {
     }
 
     @EventHandler
-    public void onItemSpawn(ItemSpawnEvent event){
-        if (!hasData(event.getEntity().getItemStack(), "itemprice", PersistentDataType.DOUBLE)){
+    public void onItemSpawn(ItemSpawnEvent event) {
+        if (!hasData(event.getEntity().getItemStack(), "itemprice", PersistentDataType.DOUBLE)) {
             return;
         }
         event.setCancelled(true);
@@ -144,12 +142,14 @@ public class EcoListeners implements Listener {
     }
 
     @EventHandler
-    public void onClick(InventoryClickEvent event){
-        if (event.getClickedInventory() == null){
+    public void onClick(InventoryClickEvent event) {
+        if (event.getClickedInventory() == null) {
             return;
         }
-        if (event.getClickedInventory() instanceof MerchantInventory && event.getSlot() == 2){ return; }
-        if (!hasData(event.getCurrentItem(), "itemprice", PersistentDataType.DOUBLE)){
+        if (event.getClickedInventory() instanceof MerchantInventory && event.getSlot() == 2) {
+            return;
+        }
+        if (!hasData(event.getCurrentItem(), "itemprice", PersistentDataType.DOUBLE)) {
             return;
         }
         event.setCancelled(true);

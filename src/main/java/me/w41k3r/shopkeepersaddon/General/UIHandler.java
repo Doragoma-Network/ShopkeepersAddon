@@ -19,9 +19,6 @@ public class UIHandler {
     static Inventory adminShopTypes = Bukkit.createInventory(virtualOwner, 27, configData("messages.shops.admin-shops-ui"));
     static Inventory playerShopTypes = Bukkit.createInventory(virtualOwner, 27, configData("messages.shops.player-shops-ui"));
 
-
-
-
     static Set<ItemStack> adminItemsList = new HashSet<>();
     static List<Inventory> adminShops = new ArrayList<>();
     static List<Inventory> adminItems = new ArrayList<>();
@@ -179,11 +176,8 @@ public class UIHandler {
     }
 
 
-
-
-
     static Inventory getOrCreatePage(List<Inventory> ShopsUI, String type) {
-        if (ShopsUI == null){
+        if (ShopsUI == null) {
             ShopsUI = new ArrayList<>();
         }
         int currentPage = ShopsUI.size() - 1;
@@ -230,15 +224,15 @@ public class UIHandler {
     }
 
     private static ItemStack createPreviousPageButton() {
-                ItemStack previousPageButton = getCustomHead("PreviousPage", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjllYTFkODYyNDdmNGFmMzUxZWQxODY2YmNhNmEzMDQwYTA2YzY4MTc3Yzc4ZTQyMzE2YTEwOThlNjBmYjdkMyJ9fX0=");
-                ItemMeta previousPageButtonMeta = previousPageButton.getItemMeta();
-                previousPageButtonMeta.setDisplayName(configData("messages.previous-page-button"));
-                previousPageButton.setItemMeta(previousPageButtonMeta);
+        ItemStack previousPageButton = getCustomHead("PreviousPage", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjllYTFkODYyNDdmNGFmMzUxZWQxODY2YmNhNmEzMDQwYTA2YzY4MTc3Yzc4ZTQyMzE2YTEwOThlNjBmYjdkMyJ9fX0=");
+        ItemMeta previousPageButtonMeta = previousPageButton.getItemMeta();
+        previousPageButtonMeta.setDisplayName(configData("messages.previous-page-button"));
+        previousPageButton.setItemMeta(previousPageButtonMeta);
         return previousPageButton;
-            }
+    }
 
     private static ItemStack createCloseInventoryButton(int currentPage, String type) {
-                ItemStack closeInventoryButton = new ItemStack(Material.BARRIER, 1);
+        ItemStack closeInventoryButton = new ItemStack(Material.BARRIER, 1);
         ItemMeta meta = closeInventoryButton.getItemMeta();
         meta.setDisplayName(configData("messages.close-inventory-button"));
         meta = setData(meta, "closeInventory", "true");
@@ -297,9 +291,6 @@ public class UIHandler {
         adminItemsIcon.setItemMeta(adminItemsMeta);
         adminShopTypes.setItem(15, adminItemsIcon);
     }
-
-
-
 }
 
 

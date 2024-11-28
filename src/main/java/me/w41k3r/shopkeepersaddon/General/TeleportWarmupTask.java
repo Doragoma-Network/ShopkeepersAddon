@@ -17,6 +17,7 @@ import static me.w41k3r.shopkeepersaddon.Main.sendPlayerMessage;
 import static me.w41k3r.shopkeepersaddon.Main.setting;
 
 public class TeleportWarmupTask implements Listener {
+
     private final Player player;
     private final Location initialLocation;
     private final Location teleportLocation;
@@ -69,7 +70,6 @@ public class TeleportWarmupTask implements Listener {
     }
 
     // Teleport the player
-    // Teleport the player
     private void teleportPlayer() {
         PlayerMoveEvent.getHandlerList().unregister(this);
 
@@ -83,7 +83,7 @@ public class TeleportWarmupTask implements Listener {
             player.teleport(finalLocation);
         }
 
-        sendPlayerMessage(player,successMessage);
+        sendPlayerMessage(player, successMessage);
         player.resetTitle();
     }
 
@@ -167,8 +167,6 @@ public class TeleportWarmupTask implements Listener {
     }
 
 
-
-
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         if (event.getPlayer().equals(player) && hasPlayerMoved(event.getFrom(), event.getTo())) {
@@ -194,7 +192,7 @@ public class TeleportWarmupTask implements Listener {
         }
 
         // Send cancel message to the player
-        sendPlayerMessage(player,cancelMessage);
+        sendPlayerMessage(player, cancelMessage);
         player.resetTitle();
     }
 }

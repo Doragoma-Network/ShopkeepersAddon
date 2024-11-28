@@ -9,9 +9,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
-import java.util.HashMap;
-import java.util.Objects;
-
 import static me.w41k3r.shopkeepersaddon.General.UIHandler.*;
 import static me.w41k3r.shopkeepersaddon.General.Utils.*;
 
@@ -35,13 +32,13 @@ public class Listeners implements Listener {
         ItemStack item = event.getCurrentItem();
         item.setAmount(1);
 
-        if (hasData(event.getCurrentItem(), "shopkeeperID", PersistentDataType.STRING)){
+        if (hasData(event.getCurrentItem(), "shopkeeperID", PersistentDataType.STRING)) {
             teleportToShop((Player) event.getWhoClicked(), getData(event.getCurrentItem(), "shopkeeperID"), true);
             event.getWhoClicked().closeInventory();
             return;
         }
 
-        if (hasData(event.getCurrentItem(), "ownerID", PersistentDataType.STRING)){
+        if (hasData(event.getCurrentItem(), "ownerID", PersistentDataType.STRING)) {
             teleportToShop((Player) event.getWhoClicked(), getData(event.getCurrentItem(), "ownerID"), false);
             event.getWhoClicked().closeInventory();
             return;
@@ -50,23 +47,20 @@ public class Listeners implements Listener {
 
         if (event.getSlot() < 44
                 && (playerShopItems.containsKey(item) || adminShopItems.containsKey(item))
-        ){
+        ) {
             Inventory toOpen = playerShopItems.containsKey(item) ? playerShopItems.get(item).get(0) : adminShopItems.get(item).get(0);
             event.getWhoClicked().openInventory(toOpen);
         }
 
-
-
-
-        if (event.getCurrentItem().getType().equals(Material.PLAYER_HEAD)){
-            if(getShopName(event.getCurrentItem()).equals("null")
-            ){
+        if (event.getCurrentItem().getType().equals(Material.PLAYER_HEAD)) {
+            if (getShopName(event.getCurrentItem()).equals("null")
+            ) {
                 return;
             }
 
             if (getShopName(event.getCurrentItem()).equals("NextPage") || getShopName(event.getCurrentItem()).equals("PreviousPage")) {
                 int newPage = getShopName(event.getCurrentItem()).equals("NextPage") ? Integer.parseInt(getData(event.getClickedInventory().getItem(49), "currentPage")) + 1 : Integer.parseInt(getData(event.getClickedInventory().getItem(49), "currentPage")) - 1;
-                switch (getData(event.getClickedInventory().getItem(49), "inventoryType").toLowerCase()){
+                switch (getData(event.getClickedInventory().getItem(49), "inventoryType").toLowerCase()) {
                     case "admin-shops":
                         event.getWhoClicked().openInventory(adminShops.get(newPage));
                         break;
@@ -121,9 +115,7 @@ public class Listeners implements Listener {
                 } catch (Exception e) {
                     errorLog("No Shops Found");
                 }
-
             }
-
         }
     }
 }

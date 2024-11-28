@@ -86,7 +86,4 @@ public final class Main extends JavaPlugin {
     public static FileConfiguration setting() {
         return plugin.getConfig();
     }
-
-
-    
-}
+    }

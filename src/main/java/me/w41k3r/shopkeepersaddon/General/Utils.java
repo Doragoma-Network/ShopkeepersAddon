@@ -1,7 +1,6 @@
 package me.w41k3r.shopkeepersaddon.General;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
-import com.destroystokyo.paper.profile.ProfileProperty;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.authlib.GameProfile;
@@ -38,11 +37,13 @@ import static me.w41k3r.shopkeepersaddon.Main.*;
 import static org.bukkit.Bukkit.getOfflinePlayer;
 
 public class Utils {
+
     public static ShopkeeperRegistry shopkeepersAPI = ShopkeepersAPI.getShopkeeperRegistry();
     public static HashMap<UUID, String> shopTitles = new HashMap<>();
     public static HashMap<String, ItemStack> heads = new HashMap<>();
     static FileConfiguration onlineCache = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "OnlineCache.yml"));
     static FileConfiguration offlineCache = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "OfflineCache.yml"));
+
     public static void loadShops() {
         new BukkitRunnable() {
             @Override
@@ -80,6 +81,7 @@ public class Utils {
             Bukkit.getLogger().warning("ShopkeepersAddon Debug » " + s);
         }
     }
+
     public static void errorLog(String s) {
         Bukkit.getLogger().severe(s);
     }
@@ -103,7 +105,7 @@ public class Utils {
     }
 
     public static boolean hasData(ItemStack item, String key, PersistentDataType type) {
-        if (item == null || item.getItemMeta() == null || item.getItemMeta().getPersistentDataContainer() == null) {
+        if (item == null || item.getItemMeta() == null) {
             return false;
         }
         return item.getItemMeta().getPersistentDataContainer().has(new NamespacedKey(plugin, key), type);
@@ -226,6 +228,7 @@ public class Utils {
                 mojangUUID.substring(20);
         return UUID.fromString(formattedUUID);
     }
+
     public static boolean isPaperAvailable() {
         try {
             Class.forName("com.destroystokyo.paper.profile.PlayerProfile");
@@ -288,7 +291,6 @@ public class Utils {
     }
 
 
-
     static String sanitizedName(String name) {
         String sanitizedName = name.replaceAll("[^a-zA-Z0-9_]", "");
         if (sanitizedName.length() > 16) {
@@ -303,7 +305,7 @@ public class Utils {
         switch (key) {
             case "adminshop":
                 AdminShopkeeper shopkeeper = (AdminShopkeeper) shopkeepersAPI.getShopkeeperByUniqueId(UUID.fromString(uniqueID));
-                headItem = getHead(getUUIDFromName(sanitizedName(type), true) , shopkeeper.getName().isEmpty() ? "Admin" : sanitizedName(shopkeeper.getName()));
+                headItem = getHead(getUUIDFromName(sanitizedName(type), true), shopkeeper.getName().isEmpty() ? "Admin" : sanitizedName(shopkeeper.getName()));
                 headMeta = headItem.getItemMeta();
                 headMeta.setDisplayName(shopkeeper.getName().isEmpty() ? "Admin Shop" : shopkeeper.getName());
                 headMeta = setData(headMeta, "shopkeeperID", uniqueID);
@@ -311,7 +313,7 @@ public class Utils {
                 return headItem;
             case "playershop":
                 PlayerShopkeeper playerShopkeeper = (PlayerShopkeeper) shopkeepersAPI.getShopkeeperByUniqueId(UUID.fromString(uniqueID));
-                headItem = getHead(getUUIDFromName(playerShopkeeper.getOwnerName(), true) , playerShopkeeper.getOwnerName());
+                headItem = getHead(getUUIDFromName(playerShopkeeper.getOwnerName(), true), playerShopkeeper.getOwnerName());
                 headMeta = headItem.getItemMeta();
                 headMeta.setDisplayName(playerShopkeeper.getOwnerName() + "'s Shop");
                 headMeta = setData(headMeta, "ownerID", getUUIDFromName(playerShopkeeper.getOwnerName(), false).toString());
@@ -358,7 +360,7 @@ public class Utils {
 
         // Check if the location is valid
         if (shopLocation == null) {
-            sendPlayerMessage(player,errorMessage);
+            sendPlayerMessage(player, errorMessage);
             debugLog("Shop location not found for id: " + shopkeeperID);
             return;
         }
@@ -371,7 +373,7 @@ public class Utils {
             // Instant teleport if warmup is bypassed or set to 0
             shopLocation.setDirection(shopLocation.toVector().subtract(player.getLocation().toVector()));
             player.teleport(shopLocation);
-            sendPlayerMessage(player,successMessage);
+            sendPlayerMessage(player, successMessage);
         }
     }
 
@@ -414,14 +416,13 @@ public class Utils {
     }
 
 
-    public static String getShopTitle(String playerName){
+    public static String getShopTitle(String playerName) {
         UUID playerUUID = UUID.fromString(getUUIDFromName(playerName, false).toString());
-        if (shopTitles.containsKey(playerUUID)){
+        if (shopTitles.containsKey(playerUUID)) {
             return shopTitles.get(playerUUID);
         }
         return setting().getString("messages.no-shop");
     }
-
 
 
     public static void loadShopTitles() {
@@ -494,13 +495,13 @@ public class Utils {
                     debugLog("Yaw and Pitch: " + player.getLocation().getYaw() + " " + player.getLocation().getPitch());
 
                     pstmt.executeUpdate();
-                    sendPlayerMessage(player,setting().getString("messages.shop-set"));
+                    sendPlayerMessage(player, setting().getString("messages.shop-set"));
                 }
             }
 
             UUID playerID = UUID.fromString(playerUUID);
 
-            if (shopTitles.containsKey(playerID)){
+            if (shopTitles.containsKey(playerID)) {
                 shopTitles.replace(playerID, description);
             } else {
                 shopTitles.put(playerID, description);
@@ -510,5 +511,4 @@ public class Utils {
             e.printStackTrace();
         }
     }
-
 }

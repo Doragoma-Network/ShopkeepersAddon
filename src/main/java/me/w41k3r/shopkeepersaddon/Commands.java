@@ -17,17 +17,12 @@ public class Commands implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] strings) {
 
-
-
-
-        if (!(commandSender instanceof Player)){
+        if (!(commandSender instanceof Player)) {
             commandSender.sendMessage("You must be a player to use this command!");
             return false;
         }
 
         Player player = (Player) commandSender;
-
-
 
         if (label.equalsIgnoreCase("setshop")) {
             if (strings.length < 1) {
@@ -50,27 +45,26 @@ public class Commands implements CommandExecutor {
             return true;
         }
 
-        if (label.equalsIgnoreCase("shops")){
+        if (label.equalsIgnoreCase("shops")) {
             try {
                 ((Player) commandSender).openInventory(HomePage);
             } catch (Exception e) {
-                sendPlayerMessage(player,setting().getString("messages.no-shop"));
+                sendPlayerMessage(player, setting().getString("messages.no-shop"));
             }
             return true;
         }
 
         if (strings[0].equalsIgnoreCase("version")) {
-            sendPlayerMessage(player,"§eShopkeepersAddon: §7" + Main.plugin.getDescription().getVersion());
+            sendPlayerMessage(player, "§eShopkeepersAddon: §7" + Main.plugin.getDescription().getVersion());
             return true;
         }
 
         if (strings[0].equalsIgnoreCase("reload")) {
             Main.plugin.reloadConfig();
-            sendPlayerMessage(player,"§6Shops reloaded!");
+            sendPlayerMessage(player, "§6Shops reloaded!");
             return true;
         }
 
         return false;
     }
-
 }

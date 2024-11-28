@@ -15,8 +15,8 @@ import static me.w41k3r.shopkeepersaddon.Main.*;
 
 public class EcoUtils {
 
-    static boolean hasMoney(Player player, double amount){
-        if (Money.getBalance(player) < amount){
+    static boolean hasMoney(Player player, double amount) {
+        if (Money.getBalance(player) < amount) {
             debugLog("Not enough money!" + amount);
             return false;
         }
@@ -24,14 +24,14 @@ public class EcoUtils {
     }
 
 
-    static ItemStack getCurrencyItem(double price){
+    static ItemStack getCurrencyItem(double price) {
         ItemStack moneyItem = new ItemStack(Material.valueOf(plugin.setting().getString("economy.item.material")));
         ItemMeta meta = moneyItem.getItemMeta();
         meta.setDisplayName(plugin.setting().getString("economy.item.name").replace("%price%", String.valueOf(price)));
         List<String> lore = plugin.setting().getStringList("economy.item.lore");
         meta.setLore(lore);
         meta = setPrice(meta, "itemprice", price);
-        if (plugin.setting().getBoolean("economy.item.glow")){
+        if (plugin.setting().getBoolean("economy.item.glow")) {
             meta.addEnchant(Enchantment.LURE, 1, true);
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         }
@@ -40,13 +40,12 @@ public class EcoUtils {
 
     }
 
-    public static void removeEconomyItem(Player player){
-        for (ItemStack item : player.getInventory().getContents()){
-            if (item != null && hasData(item, "itemprice", PersistentDataType.DOUBLE)){
+    public static void removeEconomyItem(Player player) {
+        for (ItemStack item : player.getInventory().getContents()) {
+            if (item != null && hasData(item, "itemprice", PersistentDataType.DOUBLE)) {
                 player.getInventory().remove(item);
                 return;
             }
         }
     }
-
 }
