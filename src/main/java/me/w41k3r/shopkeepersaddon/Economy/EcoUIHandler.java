@@ -13,7 +13,7 @@ import static me.w41k3r.shopkeepersaddon.Main.*;
 public class EcoUIHandler {
 
     static void setItemsOnTradeSlots(TradeSelectEvent event, int slot) {
-        ItemStack toAdd = slot == 0 ? event.getMerchant().getRecipe(event.getIndex()).getIngredients().getFirst() : event.getMerchant().getRecipe(event.getIndex()).getResult();
+        ItemStack toAdd = slot == 0 ? event.getMerchant().getRecipe(event.getIndex()).getIngredients().get(0) : event.getMerchant().getRecipe(event.getIndex()).getResult();
         if (event.getInventory().getItem(slot) != null) {
             event.getWhoClicked().getInventory().addItem(event.getInventory().getItem(slot));
         }

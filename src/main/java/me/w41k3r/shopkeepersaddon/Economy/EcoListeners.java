@@ -44,7 +44,7 @@ public class EcoListeners implements Listener {
         debugLog(recipe.getIngredients().get(0).getItemMeta().toString());
 
         if (hasData(recipe.getIngredients().get(0), "itemprice", PersistentDataType.DOUBLE)) {
-            if (!hasMoney(player, getPrice(event.getMerchant().getRecipe(event.getIndex()).getIngredients().getFirst()))) {
+            if (!hasMoney(player, getPrice(event.getMerchant().getRecipe(event.getIndex()).getIngredients().get(0)))) {
                 sendPlayerMessage(player, setting().getString("messages.no-money"));
                 event.setCancelled(true);
                 return;
