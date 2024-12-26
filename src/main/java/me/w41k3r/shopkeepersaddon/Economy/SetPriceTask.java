@@ -33,7 +33,7 @@ public class SetPriceTask implements Listener {
 
         try {
             if (event.getMessage().equalsIgnoreCase("cancel")) {
-                sendPlayerMessage(player, setting().getString("messages.price-change-cancelled"));
+                sendPlayerMessage(player, getSettingString("messages.price-change-cancelled"));
                 event.setCancelled(true);
                 HandlerList.unregisterAll(this);
                 return;
@@ -43,8 +43,7 @@ public class SetPriceTask implements Listener {
             event.setCancelled(true);
 
             Bukkit.getScheduler().runTask(plugin, () -> {
-
-                callback.onPriceSet(price, slot>17 ? slot-18 : slot, slot);
+                callback.onPriceSet(price, slot);
                 HandlerList.unregisterAll(this);
             });
 
@@ -52,7 +51,7 @@ public class SetPriceTask implements Listener {
 
         } catch (NumberFormatException e) {
             event.setCancelled(true);
-            sendPlayerMessage(player, setting().getString("messages.invalid-price"));
+            sendPlayerMessage(player, getSettingString("messages.invalid-price"));
         }
     }
 }

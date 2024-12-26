@@ -6,12 +6,21 @@ import me.w41k3r.shopkeepersaddon.General.UpdateListeners;
 import me.w41k3r.shopkeepersaddon.General.VirtualOwner;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.HashSet;
+import java.util.Set;
+
+import static me.w41k3r.shopkeepersaddon.General.UpdateListeners.updateConfig;
 import static me.w41k3r.shopkeepersaddon.General.Utils.debugLog;
 import static me.w41k3r.shopkeepersaddon.General.Utils.loadShops;
 
@@ -20,25 +29,38 @@ public final class Main extends JavaPlugin {
     public static Main plugin;
     public static Plugin shopkeepersInstance;
 
-    public static Economy money;
-    public static VirtualOwner virtualOwner;
-    private static String prefix;
+    public static Economy Money;
+     public static VirtualOwner virtualOwner;
+    static String prefix;
 
     @Override
     public void onEnable() {
-
-        saveDefaultConfig();
-
         plugin = this;
-        shopkeepersInstance = getServer().getPluginManager().getPlugin("Shopkeepers");
+        File configFile = new File(getDataFolder(), "config.yml");
 
-        prefix = setting().getString("messages.prefix");
+        FileConfiguration oldConfig = YamlConfiguration.loadConfiguration(configFile);
+        InputStream defaultConfigStream = getResource("config.yml");
+        FileConfiguration defaultConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defaultConfigStream));
 
-        // Vaultが読み込めなかった場合プラグインを無効にする
-        if (!setupVault()) {
-            this.getLogger().severe("Disabling due to Vault dependency error!");
-            Bukkit.getPluginManager().disablePlugin(this);
-            return;
+        Bukkit.getLogger().info("Checking for config updates... " + oldConfig.getString("version") + " " + defaultConfig.getString("version"));
+
+
+
+        if (oldConfig.getString("version") == null || oldConfig.getString("version").equals(defaultConfig.getString("version"))) {
+            saveDefaultConfig();
+        } else {
+            updateConfig(oldConfig, configFile);
+        }
+
+        ShopkeepersInstance = getServer().getPluginManager().getPlugin("Shopkeepers");
+        prefix = getSettingString("messages.prefix");
+
+        if (plugin.getConfig().getBoolean("economy.enabled")) {
+            if (!setupVault()) {
+                this.getLogger().severe("Disabling due to Vault dependency error!");
+                Bukkit.getPluginManager().disablePlugin(this);
+                return;
+            }
         }
 
         debugLog("Shopkeepers plugin found, loading shops...");
@@ -51,13 +73,18 @@ public final class Main extends JavaPlugin {
         getCommand("setshop").setExecutor(new Commands());
         getCommand("visitshop").setExecutor(new Commands());
 
-        // イベントリスナーの登録
         getServer().getPluginManager().registerEvents(new Listeners(), this);
         getServer().getPluginManager().registerEvents(new EcoListeners(), this);
         getServer().getPluginManager().registerEvents(new UpdateListeners(), this);
 
-        // VirtualOwnerのインスタンスを生成
-        virtualOwner = new VirtualOwner("ShopeepersAddon");
+        virtualOwner = new VirtualOwner("ShopkeepersAddon");
+    }
+
+
+
+    @Override
+    public void onDisable() {
+        // Plugin shutdown logic
     }
 
     private boolean setupVault() {
@@ -77,11 +104,22 @@ public final class Main extends JavaPlugin {
     }
 
     public static void sendPlayerMessage(Player player, String message) {
-        player.sendMessage(prefix + message);
+        String formattedMessage = ChatColor.translateAlternateColorCodes('&', message.replace('§', '&')).replace("\\n", "\n");
+        player.sendMessage(prefix + formattedMessage);
     }
+
 
     // get config
     public static FileConfiguration setting() {
         return plugin.getConfig();
     }
+
+    public static String getSettingString(String path) {
+        String value = plugin.getConfig().getString(path);
+        return ChatColor.translateAlternateColorCodes('&', value);
+    }
+
+
+
+
 }

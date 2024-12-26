@@ -11,8 +11,7 @@ import java.util.Arrays;
 
 import static me.w41k3r.shopkeepersaddon.General.UIHandler.HomePage;
 import static me.w41k3r.shopkeepersaddon.General.Utils.*;
-import static me.w41k3r.shopkeepersaddon.Main.sendPlayerMessage;
-import static me.w41k3r.shopkeepersaddon.Main.setting;
+import static me.w41k3r.shopkeepersaddon.Main.*;
 
 public class Commands implements CommandExecutor {
 
@@ -51,7 +50,7 @@ public class Commands implements CommandExecutor {
             try {
                 ((Player) commandSender).openInventory(HomePage);
             } catch (Exception e) {
-                sendPlayerMessage(player, setting().getString("messages.no-shop"));
+                sendPlayerMessage(player,getSettingString("messages.no-shop"));
             }
             return true;
         }

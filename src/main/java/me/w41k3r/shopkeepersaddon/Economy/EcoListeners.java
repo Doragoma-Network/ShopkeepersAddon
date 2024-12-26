@@ -45,7 +45,7 @@ public class EcoListeners implements Listener {
 
         if (hasData(recipe.getIngredients().get(0), "itemprice", PersistentDataType.DOUBLE)) {
             if (!hasMoney(player, getPrice(event.getMerchant().getRecipe(event.getIndex()).getIngredients().get(0)))) {
-                sendPlayerMessage(player, setting().getString("messages.no-money"));
+                sendPlayerMessage(player, getSettingString("messages.no-money"));
                 event.setCancelled(true);
                 return;
             }
@@ -74,7 +74,7 @@ public class EcoListeners implements Listener {
             price = getPrice(recipe.getResultItem().copy());
             if (!isAdminShopkeeper) {
                 if (!money.has(((PlayerShopkeeper) shopkeeper).getOwner(), price)) {
-                    sendPlayerMessage(player, setting().getString("messages.no-money-owner"));
+                    sendPlayerMessage(player, getSettingString("messages.no-money-owner"));
                     event.setCancelled(true);
                     return;
                 }
