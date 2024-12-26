@@ -16,20 +16,20 @@ import static me.w41k3r.shopkeepersaddon.Main.virtualOwner;
 public class UIHandler {
 
     public static Inventory HomePage = Bukkit.createInventory(virtualOwner, 27, configData("messages.shops.shops-ui"));
-    static Inventory adminShopTypes = Bukkit.createInventory(virtualOwner, 27, configData("messages.shops.admin-shops-ui"));
-    static Inventory playerShopTypes = Bukkit.createInventory(virtualOwner, 27, configData("messages.shops.player-shops-ui"));
+    public static final Inventory adminShopTypes = Bukkit.createInventory(virtualOwner, 27, configData("messages.shops.admin-shops-ui"));
+    public static Inventory playerShopTypes = Bukkit.createInventory(virtualOwner, 27, configData("messages.shops.player-shops-ui"));
 
-    static Set<ItemStack> adminItemsList = new HashSet<>();
-    static List<Inventory> adminShops = new ArrayList<>();
-    static List<Inventory> adminItems = new ArrayList<>();
-    static Set<ItemStack> adminHeads = new HashSet<>();
-    static HashMap<ItemStack, List<Inventory>> adminShopItems = new HashMap<>();
+    public static Set<ItemStack> adminItemsList = new HashSet<>();
+    public static List<Inventory> adminShops = new ArrayList<>();
+    public static List<Inventory> adminItems = new ArrayList<>();
+    public static Set<ItemStack> adminHeads = new HashSet<>();
+    public static HashMap<ItemStack, List<Inventory>> adminShopItems = new HashMap<>();
 
-    static Set<ItemStack> playerItemsList = new HashSet<>();
-    static List<Inventory> playerShops = new ArrayList<>();
-    static List<Inventory> playerItems = new ArrayList<>();
-    static Set<ItemStack> playerHeads = new HashSet<>();
-    static HashMap<ItemStack, List<Inventory>> playerShopItems = new HashMap<>();
+    public static Set<ItemStack> playerItemsList = new HashSet<>();
+    public static List<Inventory> playerShops = new ArrayList<>();
+    public static List<Inventory> playerItems = new ArrayList<>();
+    public static Set<ItemStack> playerHeads = new HashSet<>();
+    public static HashMap<ItemStack, List<Inventory>> playerShopItems = new HashMap<>();
 
     static void readyItemsUI(FileConfiguration shopData, String shopID) {
         HashSet<ItemStack> items = new HashSet<>();

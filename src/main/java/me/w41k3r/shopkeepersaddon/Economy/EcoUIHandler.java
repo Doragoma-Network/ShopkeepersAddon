@@ -15,8 +15,8 @@ public class EcoUIHandler {
     /**
      * トレードの際のUIの項目を設定します。
      *
-     * @param event     トレードのイベント
-     * @param slot      0: 買い物のアイテム、1: 売り物のアイテム
+     * @param event トレードのイベント
+     * @param slot  0: 買い物のアイテム、1: 売り物のアイテム
      */
     public static void setItemsOnTradeSlots(TradeSelectEvent event, int slot) {
         // 0番目のスロットには買い物のアイテムを、1番目のスロットには売り物のアイテムを設定

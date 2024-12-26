@@ -1,24 +1,16 @@
 package me.w41k3r.shopkeepersaddon.General;
 
-import com.mojang.authlib.exceptions.MinecraftClientHttpException;
-import com.nisovin.shopkeepers.api.events.ShopkeeperEditedEvent;
-import com.nisovin.shopkeepers.api.shopkeeper.Shopkeeper;
-import com.nisovin.shopkeepers.api.shopkeeper.TradingRecipe;
-import com.nisovin.shopkeepers.api.shopkeeper.admin.AdminShopkeeper;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.*;
-import java.util.function.Supplier;
 
 import static me.w41k3r.shopkeepersaddon.General.UIHandler.*;
+import static me.w41k3r.shopkeepersaddon.General.Utils.debugLog;
 import static me.w41k3r.shopkeepersaddon.Main.*;
 
 public class UpdateListeners implements Listener {
@@ -35,7 +27,7 @@ public class UpdateListeners implements Listener {
                 newConfig = plugin.getConfig();
                 for (String key : newConfig.getKeys(true)) {
                     if (key.equalsIgnoreCase("version")) continue;
-                    if (oldConfig.contains(key)){
+                    if (oldConfig.contains(key)) {
                         newConfig.set(key, oldConfig.get(key));
                     }
                 }
@@ -50,11 +42,6 @@ public class UpdateListeners implements Listener {
             System.out.println("Failed to update config.");
         }
     }
-
-
-
-
-
 
 
     static void startUpdates() {

@@ -53,18 +53,6 @@
         <version>3.4.2</version>
         <executions>
           <execution>
-            <id>snapshot-jar</id>
-            <phase>package</phase>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-            <configuration>
-              <classifier>SNAPSHOT-23V3A</classifier>
-              <outputDirectory>B:\Test\plugins</outputDirectory>
-              <finalName>ShopkeepersAddon</finalName>
-            </configuration>
-          </execution>
-          <execution>
             <id>release-jar</id>
             <phase>package</phase>
             <goals>
@@ -122,7 +110,7 @@
     <dependency>
       <groupId>com.nisovin.shopkeepers</groupId>
       <artifactId>ShopkeepersAPI</artifactId>
-      <version>2.23.3</version>
+      <version>2.22.3</version>
       <scope>provided</scope>
     </dependency>
     <dependency>

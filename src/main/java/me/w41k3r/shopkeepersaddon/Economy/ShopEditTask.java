@@ -62,7 +62,7 @@ public class ShopEditTask implements Listener, PriceInputCallback {
             page = event.getClickedInventory().getItem(31).getAmount();
             SetPriceTask setPriceTask = new SetPriceTask(player, event.getSlot(), this);
             setPriceTask.startEdit();
-            sendPlayerMessage(player,getSettingString("messages.set-price"));
+            sendPlayerMessage(player, getSettingString("messages.set-price"));
             player.closeInventory();
             return;
         }
@@ -78,7 +78,7 @@ public class ShopEditTask implements Listener, PriceInputCallback {
             if (event.getClickedInventory().getItem(slot + 18) == null
                     || event.getClickedInventory().getItem(slot + 18).getType().isAir()
                     || event.getClickedInventory().getItem(slot + 18).getType().equals(Material.GRAY_STAINED_GLASS_PANE)
-) {
+            ) {
                 if (shopkeeper instanceof PlayerShopkeeper) {
                     Bukkit.getScheduler().runTaskLater(plugin, () -> {
                         debugLog("Setting default price item" + event.getClickedInventory().getItem(slot + 18));
@@ -131,7 +131,7 @@ public class ShopEditTask implements Listener, PriceInputCallback {
 
     @Override
     public void onPriceSet(double price, int rawSlot) {
-        sendPlayerMessage(player,getSettingString("messages.price-changed").replace("%price%", String.valueOf(price)));
+        sendPlayerMessage(player, getSettingString("messages.price-changed").replace("%price%", String.valueOf(price)));
         shopkeeper.openEditorWindow(player);
         while (player.getOpenInventory().getTopInventory().getItem(31).getAmount() != page) {
             simulateClick(player, player.getOpenInventory().getTopInventory(), 35);

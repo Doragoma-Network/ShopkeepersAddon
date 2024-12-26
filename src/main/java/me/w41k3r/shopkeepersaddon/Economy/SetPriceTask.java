@@ -55,4 +55,3 @@ public class SetPriceTask implements Listener {
         }
     }
 }
-

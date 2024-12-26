@@ -46,15 +46,13 @@ public class Listeners implements Listener {
 
 
         if (event.getSlot() < 44
-                && (playerShopItems.containsKey(item) || adminShopItems.containsKey(item))
-        ) {
+                && (playerShopItems.containsKey(item) || adminShopItems.containsKey(item))) {
             Inventory toOpen = playerShopItems.containsKey(item) ? playerShopItems.get(item).get(0) : adminShopItems.get(item).get(0);
             event.getWhoClicked().openInventory(toOpen);
         }
 
         if (event.getCurrentItem().getType().equals(Material.PLAYER_HEAD)) {
-            if (getShopName(event.getCurrentItem()).equals("null")
-            ) {
+            if (getShopName(event.getCurrentItem()).equals("null")) {
                 return;
             }
 
@@ -112,7 +110,7 @@ public class Listeners implements Listener {
 
                 try {
                     event.getWhoClicked().openInventory(open);
-                } catch (Exception e) {
+                } catch (Exception exception) {
                     errorLog("No Shops Found");
                 }
             }

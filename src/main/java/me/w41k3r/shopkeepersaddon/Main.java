@@ -17,8 +17,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.HashSet;
-import java.util.Set;
 
 import static me.w41k3r.shopkeepersaddon.General.UpdateListeners.updateConfig;
 import static me.w41k3r.shopkeepersaddon.General.Utils.debugLog;
@@ -29,12 +27,14 @@ public final class Main extends JavaPlugin {
     public static Main plugin;
     public static Plugin shopkeepersInstance;
 
-    public static Economy Money;
-     public static VirtualOwner virtualOwner;
-    static String prefix;
+    public static Economy money;
+    public static VirtualOwner virtualOwner;
+
+    private static String prefix;
 
     @Override
     public void onEnable() {
+
         plugin = this;
         File configFile = new File(getDataFolder(), "config.yml");
 
@@ -45,14 +45,13 @@ public final class Main extends JavaPlugin {
         Bukkit.getLogger().info("Checking for config updates... " + oldConfig.getString("version") + " " + defaultConfig.getString("version"));
 
 
-
         if (oldConfig.getString("version") == null || oldConfig.getString("version").equals(defaultConfig.getString("version"))) {
             saveDefaultConfig();
         } else {
             updateConfig(oldConfig, configFile);
         }
 
-        ShopkeepersInstance = getServer().getPluginManager().getPlugin("Shopkeepers");
+        shopkeepersInstance = getServer().getPluginManager().getPlugin("Shopkeepers");
         prefix = getSettingString("messages.prefix");
 
         if (plugin.getConfig().getBoolean("economy.enabled")) {
@@ -78,13 +77,6 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new UpdateListeners(), this);
 
         virtualOwner = new VirtualOwner("ShopkeepersAddon");
-    }
-
-
-
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
     }
 
     private boolean setupVault() {
@@ -118,8 +110,4 @@ public final class Main extends JavaPlugin {
         String value = plugin.getConfig().getString(path);
         return ChatColor.translateAlternateColorCodes('&', value);
     }
-
-
-
-
 }

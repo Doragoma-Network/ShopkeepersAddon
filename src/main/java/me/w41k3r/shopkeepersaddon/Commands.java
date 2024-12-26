@@ -11,7 +11,9 @@ import java.util.Arrays;
 
 import static me.w41k3r.shopkeepersaddon.General.UIHandler.HomePage;
 import static me.w41k3r.shopkeepersaddon.General.Utils.*;
-import static me.w41k3r.shopkeepersaddon.Main.*;
+import static me.w41k3r.shopkeepersaddon.Main.getSettingString;
+import static me.w41k3r.shopkeepersaddon.Main.sendPlayerMessage;
+
 
 public class Commands implements CommandExecutor {
 

@@ -1,6 +1,7 @@
 package me.w41k3r.shopkeepersaddon.General;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
+import com.destroystokyo.paper.profile.ProfileProperty;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.authlib.GameProfile;
@@ -11,7 +12,6 @@ import com.nisovin.shopkeepers.api.shopkeeper.Shopkeeper;
 import com.nisovin.shopkeepers.api.shopkeeper.ShopkeeperRegistry;
 import com.nisovin.shopkeepers.api.shopkeeper.admin.AdminShopkeeper;
 import com.nisovin.shopkeepers.api.shopkeeper.player.PlayerShopkeeper;
-import me.w41k3r.shopkeepersaddon.Main;
 import me.w41k3r.shopkeepersaddon.Main;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -51,6 +51,7 @@ public class Utils {
     static File offlineCacheFile = new File(plugin.getDataFolder(), "OfflineCache.yml");
     static FileConfiguration onlineCache = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "OnlineCache.yml"));
     static FileConfiguration offlineCache = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "OfflineCache.yml"));
+
     public static void loadShops() {
 
         new BukkitRunnable() {
@@ -201,12 +202,12 @@ public class Utils {
             try {
                 if (isPaperAvailable()) {
 
-                    if(onlineCache.contains(playerName)) {
+                    if (onlineCache.contains(playerName)) {
                         debugLog("Getting online cache head for " + playerName);
                         PlayerProfile profile = createProfileWithRetry(UUID.fromString((String) onlineCache.get(playerName)), sanitizedName(playerName));
                         headMeta.setPlayerProfile(profile);
                     } else {
-                        PlayerProfile profile = Bukkit.createProfile(UUID.fromString("8667ba71-b85a-4004-af54-457a9734eed7"),playerName);
+                        PlayerProfile profile = Bukkit.createProfile(UUID.fromString("8667ba71-b85a-4004-af54-457a9734eed7"), playerName);
                         headMeta.setPlayerProfile(profile);
                     }
                 } else {
@@ -349,7 +350,7 @@ public class Utils {
                 case "adminshop":
                     AdminShopkeeper shopkeeper = (AdminShopkeeper) shopkeepersAPI.getShopkeeperByUniqueId(UUID.fromString(uniqueID));
                     debugLog("Admin Shopkeeper: " + type);
-                    headItem = getHead(getUUIDFromName(sanitizedName(type), true) , type);
+                    headItem = getHead(getUUIDFromName(sanitizedName(type), true), type);
                     headMeta = headItem.getItemMeta();
                     headMeta.setDisplayName(shopkeeper.getName().isEmpty() ? "Admin Shop" : shopkeeper.getName());
                     headMeta = setData(headMeta, "shopkeeperID", uniqueID);
@@ -357,7 +358,7 @@ public class Utils {
                     return headItem;
                 case "playershop":
                     PlayerShopkeeper playerShopkeeper = (PlayerShopkeeper) shopkeepersAPI.getShopkeeperByUniqueId(UUID.fromString(uniqueID));
-                    headItem = getHead(getUUIDFromName(playerShopkeeper.getOwnerName(), true) , playerShopkeeper.getOwnerName());
+                    headItem = getHead(getUUIDFromName(playerShopkeeper.getOwnerName(), true), playerShopkeeper.getOwnerName());
                     headMeta = headItem.getItemMeta();
                     headMeta.setDisplayName(playerShopkeeper.getOwnerName() + "'s Shop");
                     headMeta = setData(headMeta, "ownerID", getUUIDFromName(playerShopkeeper.getOwnerName(), false).toString());
@@ -365,8 +366,7 @@ public class Utils {
                     return headItem;
             }
             return headItem;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             debugLog("Error getting icon for " + uniqueID);
             return null;
         }
@@ -478,8 +478,6 @@ public class Utils {
     }
 
 
-
-
     public static void loadShopTitles() {
         String url = "jdbc:sqlite:" + plugin.getDataFolder() + "/shops.db";
 
@@ -550,7 +548,7 @@ public class Utils {
                     debugLog("Yaw and Pitch: " + player.getLocation().getYaw() + " " + player.getLocation().getPitch());
 
                     pstmt.executeUpdate();
-                    sendPlayerMessage(player,getSettingString("messages.shop-set"));
+                    sendPlayerMessage(player, getSettingString("messages.shop-set"));
                 }
             }
 
