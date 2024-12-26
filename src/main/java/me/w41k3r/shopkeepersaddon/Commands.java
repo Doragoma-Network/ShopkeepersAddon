@@ -5,6 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
@@ -14,8 +15,9 @@ import static me.w41k3r.shopkeepersaddon.Main.sendPlayerMessage;
 import static me.w41k3r.shopkeepersaddon.Main.setting;
 
 public class Commands implements CommandExecutor {
+
     @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String label, String[] strings) {
+    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String label, String[] strings) {
 
         if (!(commandSender instanceof Player)) {
             commandSender.sendMessage("You must be a player to use this command!");

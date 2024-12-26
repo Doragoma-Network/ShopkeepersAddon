@@ -38,19 +38,21 @@ public class ShopEditTask implements Listener, PriceInputCallback {
     }
 
     public void startEdit() {
+
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @EventHandler
     public void onEditShop(InventoryClickEvent event) {
-
-        if (!event.getWhoClicked().equals(player) || event.getClickedInventory() == null) {
+        if (!event.getWhoClicked().equals(player)
+                || event.getClickedInventory() == null
+        ) {
             return;
         }
 
         if (hasData(event.getCurrentItem(), "itemprice", PersistentDataType.DOUBLE)) {
             debugLog(event.getCursor().toString());
-            if (!event.getCursor().getType().isAir()) {
+            if (event.getCursor() != null && !event.getCursor().getType().isAir()) {
                 event.setCancelled(true);
                 Bukkit.getScheduler().runTaskLater(plugin, () -> {
                     event.getClickedInventory().setItem(event.getSlot(), event.getCursor());
@@ -71,14 +73,13 @@ public class ShopEditTask implements Listener, PriceInputCallback {
         if (event.getCurrentItem() != null && !event.getClickedInventory().getItem(event.getSlot()).getType().equals(Material.GRAY_STAINED_GLASS_PANE)) {
             return;
         }
-
         int slot = event.getRawSlot();
         if (slot < 9) {
             debugLog("Price Item Slot: " + event.getClickedInventory().getItem(slot + 18));
             if (event.getClickedInventory().getItem(slot + 18) == null
                     || event.getClickedInventory().getItem(slot + 18).getType().isAir()
                     || event.getClickedInventory().getItem(slot + 18).getType().equals(Material.GRAY_STAINED_GLASS_PANE)
-) {
+            ) {
                 if (shopkeeper instanceof PlayerShopkeeper) {
                     Bukkit.getScheduler().runTaskLater(plugin, () -> {
                         debugLog("Setting default price item" + event.getClickedInventory().getItem(slot + 18));

@@ -11,6 +11,7 @@ import com.nisovin.shopkeepers.api.shopkeeper.Shopkeeper;
 import com.nisovin.shopkeepers.api.shopkeeper.ShopkeeperRegistry;
 import com.nisovin.shopkeepers.api.shopkeeper.admin.AdminShopkeeper;
 import com.nisovin.shopkeepers.api.shopkeeper.player.PlayerShopkeeper;
+import me.w41k3r.shopkeepersaddon.Main;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -41,19 +42,21 @@ public class Utils {
     public static ShopkeeperRegistry shopkeepersAPI = ShopkeepersAPI.getShopkeeperRegistry();
     public static HashMap<UUID, String> shopTitles = new HashMap<>();
     public static HashMap<String, ItemStack> heads = new HashMap<>();
-    static FileConfiguration onlineCache = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "OnlineCache.yml"));
-    static FileConfiguration offlineCache = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "OfflineCache.yml"));
+
+    private static final FileConfiguration onlineCache = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "OnlineCache.yml"));
+    private static final  FileConfiguration offlineCache = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "OfflineCache.yml"));
 
     public static void loadShops() {
+
         new BukkitRunnable() {
             @Override
             public void run() {
 
                 FileConfiguration config;
                 try {
-                    config = YamlConfiguration.loadConfiguration(new File(ShopkeepersInstance.getDataFolder(), "data/save.yml"));
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    config = YamlConfiguration.loadConfiguration(new File(shopkeepersInstance.getDataFolder(), "data/save.yml"));
+                } catch (Exception exception) {
+                    errorLog("Error loading shops: " + exception.getMessage());
                     return;
                 }
 
@@ -75,23 +78,38 @@ public class Utils {
         startUpdates();
     }
 
-
-    public static void debugLog(String s) {
-        if (plugin.setting().getBoolean("debug")) {
-            Bukkit.getLogger().warning("ShopkeepersAddon Debug » " + s);
+    /**
+     * 与えられた文字列に対して、デバッグログを提供します。
+     * "debug"設定がtrueの場合、ログに警告として出力されます。
+     *
+     * @param str ログに出力するメッセージ
+     */
+    public static void debugLog(String str) {
+        if (Main.setting().getBoolean("debug")) {
+            plugin.getLogger().warning("ShopkeepersAddon Debug » " + str);
         }
     }
 
-    public static void errorLog(String s) {
-        Bukkit.getLogger().severe(s);
+    /**
+     * エラーログを出力します。与えられた文字列をログに深刻なエラーとして出力します。
+     *
+     * @param str ログに出力するエラーメッセージ
+     */
+    public static void errorLog(String str) {
+        plugin.getLogger().severe(str);
     }
 
-    public static void log(String s) {
-        Bukkit.getLogger().info("§eShopkeepersAddon » §a" + s);
+    /**
+     * 情報メッセージをログに出力します。「ShopkeepersAddon »」がプレフィックスとして追加されます。
+     *
+     * @param str ログに出力する情報メッセージ
+     */
+    public static void log(String str) {
+        plugin.getLogger().info("§eShopkeepersAddon » §a" + str);
     }
 
     public static String configData(String key) {
-        return plugin.setting().getString(key);
+        return Main.setting().getString(key);
     }
 
     public static ItemMeta setData(ItemMeta itemMeta, String key, String value) {
@@ -340,9 +358,9 @@ public class Utils {
         String errorMessage = setting().getString("messages.no-shop");
 
         // Bypass warmup permission check
-        if (isAdminShop && player.hasPermission("shopkeeperaddon.adminshop.warmup.bypass")) {
+        if (isAdminShop && player.hasPermission("shopkeepersaddon.adminshop.warmup.bypass")) {
             warmupTimeInSeconds = 0;
-        } else if (!isAdminShop && player.hasPermission("shopkeeperaddon.playershop.warmup.bypass")) {
+        } else if (!isAdminShop && player.hasPermission("shopkeepersaddon.playershop.warmup.bypass")) {
             warmupTimeInSeconds = 0;
         }
 
@@ -506,9 +524,8 @@ public class Utils {
             } else {
                 shopTitles.put(playerID, description);
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
         }
     }
 }

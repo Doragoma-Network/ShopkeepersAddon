@@ -16,7 +16,7 @@ import static me.w41k3r.shopkeepersaddon.Main.*;
 public class EcoUtils {
 
     static boolean hasMoney(Player player, double amount) {
-        if (money.getBalance(player) < amount) {
+        if (Money.getBalance(player) < amount) {
             debugLog("Not enough money!" + amount);
             return false;
         }

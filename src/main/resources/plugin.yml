@@ -40,9 +40,9 @@ permissions:
     shopkeepersaddon.visitShop.command:
         description: ShopkeepersAddon visitShop command permission
         default: true
-    shopkeeperaddon.adminshop.warmup.bypass:
+    shopkeepersaddon.adminshop.warmup.bypass:
         description: Bypass the warmup for teleporting to admin shops
         default: false
-    shopkeeperaddon.playershop.warmup.bypass:
+    shopkeepersaddon.playershop.warmup.bypass:
         description: Bypass the warmup for teleporting to player shops
         default: false

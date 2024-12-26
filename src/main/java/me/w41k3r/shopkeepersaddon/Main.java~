@@ -34,11 +34,15 @@ public final class Main extends JavaPlugin {
 
         prefix = setting().getString("messages.prefix");
 
-        // Vaultが読み込めなかった場合プラグインを無効にする
-        if (!setupVault()) {
-            this.getLogger().severe("Disabling due to Vault dependency error!");
-            Bukkit.getPluginManager().disablePlugin(this);
-            return;
+        // Economyの機能を有効にした場合
+        if (plugin.getConfig().getBoolean("economy.enabled")) {
+            // Vaultが読み込めなかった場合
+            if (!setupVault()) {
+                // プラグインを無効にする
+                this.getLogger().severe("Disabling due to Vault dependency error!");
+                Bukkit.getPluginManager().disablePlugin(this);
+                return;
+            }
         }
 
         debugLog("Shopkeepers plugin found, loading shops...");

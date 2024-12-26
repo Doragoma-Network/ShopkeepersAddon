@@ -25,7 +25,7 @@ public class UpdateListeners implements Listener {
     static void refreshShops() {
         FileConfiguration config;
         try {
-            config = YamlConfiguration.loadConfiguration(new File(ShopkeepersInstance.getDataFolder(), "data/save.yml"));
+            config = YamlConfiguration.loadConfiguration(new File(shopkeepersInstance.getDataFolder(), "data/save.yml"));
         } catch (Exception e) {
             e.printStackTrace();
             return;

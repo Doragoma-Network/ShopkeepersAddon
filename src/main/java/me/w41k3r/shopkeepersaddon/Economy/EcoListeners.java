@@ -64,23 +64,23 @@ public class EcoListeners implements Listener {
         Double price;
         if (hasData(recipe.getItem1().copy(), "itemprice", PersistentDataType.DOUBLE)) {
             price = getPrice(recipe.getItem1().copy());
-            Money.withdrawPlayer(player, price);
+            money.withdrawPlayer(player, price);
             if (!isAdminShopkeeper) {
-                Money.depositPlayer(((PlayerShopkeeper) shopkeeper).getOwner(), price);
+                money.depositPlayer(((PlayerShopkeeper) shopkeeper).getOwner(), price);
             }
             return;
         }
         if (hasData(recipe.getResultItem().copy(), "itemprice", PersistentDataType.DOUBLE)) {
             price = getPrice(recipe.getResultItem().copy());
             if (!isAdminShopkeeper) {
-                if (!Money.has(((PlayerShopkeeper) shopkeeper).getOwner(), price)) {
+                if (!money.has(((PlayerShopkeeper) shopkeeper).getOwner(), price)) {
                     sendPlayerMessage(player, setting().getString("messages.no-money-owner"));
                     event.setCancelled(true);
                     return;
                 }
-                Money.withdrawPlayer(((PlayerShopkeeper) shopkeeper).getOwner(), price);
+                money.withdrawPlayer(((PlayerShopkeeper) shopkeeper).getOwner(), price);
             }
-            Money.depositPlayer(player, price);
+            money.depositPlayer(player, price);
             event.getClickEvent().getClickedInventory().removeItem(recipe.getItem1().copy());
             if (recipe.hasItem2()) {
                 event.getClickEvent().getClickedInventory().removeItem(recipe.getItem2().copy());
@@ -92,8 +92,7 @@ public class EcoListeners implements Listener {
 
     @EventHandler
     public void OpenEditorUI(ShopkeeperOpenUIEvent event) {
-        if (!(event.getUIType().equals(ShopkeepersAPI.getDefaultUITypes().getEditorUIType()))
-                || !plugin.setting().getBoolean("economy.enabled")) {
+        if (!(event.getUIType().equals(ShopkeepersAPI.getDefaultUITypes().getEditorUIType()))) {
             return;
         }
 

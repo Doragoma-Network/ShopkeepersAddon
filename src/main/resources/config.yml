@@ -29,8 +29,6 @@ admin-shop:
 refresh-rate: 60
 
 economy:
-    # Enable economy support
-    enabled: true
     # Set the price limit for trades
     selling-price-limit: 100000000.00
     # Currency Item:
